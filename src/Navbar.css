@@ -1,0 +1,36 @@
+.custom-navbar {
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff !important;
+    transition: color 0.3s ease;
+  }
+  
+  .brand:hover {
+    color: #ffc107 !important;
+  }
+  
+  .nav-item {
+    margin-left: 10px;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-icon {
+    margin-right: 5px;
+  }
+  
+  .nav-item:hover {
+    color: #ffc107 !important;
+  }
+  
+  @media (max-width: 991px) {
+    .nav-item {
+      padding: 10px 0;
+    }
+  }
+  

@@ -1,0 +1,40 @@
+.home-page {
+    overflow-x: hidden;
+  }
+  
+  .full-screen-carousel {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    margin-top: -140px;
+  }
+  
+  .carousel-image {
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .main-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 8rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .carousel-caption h3 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .carousel-caption p {
+    font-size: 1.2rem;
+  }
+  

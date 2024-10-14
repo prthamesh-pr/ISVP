@@ -104,8 +104,8 @@ const LoginPage = () => {
                     required
                   >
                     <option value="student">Student</option>
-                    <option value="collegeAdmin">College Admin</option>
-                    <option value="other">Other</option>
+                    <option value="college">College</option>
+
                   </Form.Select>
                 </Form.Group>
                 <Button variant="primary" type="submit" className="w-100 mt-3">

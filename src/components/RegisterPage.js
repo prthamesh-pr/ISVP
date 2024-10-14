@@ -127,8 +127,8 @@ const RegisterPage = () => {
                     required
                   >
                     <option value="">Select User Type</option>
-                    <option value="College">College</option>
-                    <option value="Student">Student</option>
+                    <option value="college">College</option>
+                    <option value="student">Student</option>
                   </Form.Control>
                 </Form.Group>
 

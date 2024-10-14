@@ -132,7 +132,7 @@ const RegisterPage = () => {
                   </Form.Control>
                 </Form.Group>
 
-                {formData.userType === 'College' && (
+                {formData.userType === 'college' && (
                   <Form.Group className="mb-3">
                     <Form.Label><FaBuilding className="me-2 text-primary" />College Name</Form.Label>
                     <Form.Control
@@ -146,7 +146,7 @@ const RegisterPage = () => {
                   </Form.Group>
                 )}
 
-                {formData.userType === 'Student' && (
+                {formData.userType === 'student' && (
                   <Form.Group className="mb-3">
                     <Form.Label><FaBuilding className="me-2 text-primary" />Select College</Form.Label>
                     <Form.Control

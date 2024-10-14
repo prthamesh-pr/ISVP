@@ -7,6 +7,7 @@ const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    userType: 'student', // Default to student
   });
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -28,17 +29,21 @@ const LoginPage = () => {
         let userFound = false;
         snapshot.forEach((childSnapshot) => {
           const userData = childSnapshot.val();
-          if (userData.email === formData.email && userData.password === formData.password) {
+          if (
+            userData.email === formData.email &&
+            userData.password === formData.password &&
+            userData.userType === formData.userType // Check user type
+          ) {
             userFound = true;
             showToastMessage('Login successful!', 'success');
-            // Here you would typically set the user session or redirect to a dashboard
+            // Typically, you'd set the user session or redirect to a dashboard
             console.log('Login successful!');
             return;
           }
         });
 
         if (!userFound) {
-          showToastMessage('Invalid email or password', 'danger');
+          showToastMessage('Invalid email, password, or user type', 'danger');
         }
       } else {
         showToastMessage('No users found', 'danger');
@@ -89,6 +94,19 @@ const LoginPage = () => {
                     required
                     placeholder="Enter your password"
                   />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label><FaLock className="me-2 text-primary" />User Type</Form.Label>
+                  <Form.Select
+                    name="userType"
+                    value={formData.userType}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="student">Student</option>
+                    <option value="collegeAdmin">College Admin</option>
+                    <option value="other">Other</option>
+                  </Form.Select>
                 </Form.Group>
                 <Button variant="primary" type="submit" className="w-100 mt-3">
                   <FaSignInAlt className="me-2" /> Login

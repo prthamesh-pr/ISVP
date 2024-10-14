@@ -24,6 +24,8 @@ export function register(registerData) {
       email: registerData.email,
       password: registerData.password,
       confirmPassword: registerData.confirmPassword,
+      userType: registerData.userType,
+      collegeName: registerData.collegeName,
     });
     return true;
   } catch (error) {

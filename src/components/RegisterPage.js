@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Toast, ToastContainer, Image } from 'react-bootstrap';
-import { FaUser, FaEnvelope, FaPhone, FaLock, FaUserPlus } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaPhone, FaLock, FaUserPlus, FaBuilding } from 'react-icons/fa';
 import { register } from "../firebase";
 
 const RegisterPage = () => {
@@ -10,7 +10,18 @@ const RegisterPage = () => {
     phoneNumber: '',
     password: '',
     confirmPassword: '',
+    userType: '', // Added userType field
+    collegeName: '', // College name for College userType
   });
+
+  const [collegeList, setCollegeList] = useState([
+    'Harvard University',
+    'Stanford University',
+    'MIT',
+    'Oxford University',
+    // Add more colleges here
+  ]);
+
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVariant, setToastVariant] = useState('success');
@@ -42,6 +53,8 @@ const RegisterPage = () => {
           phoneNumber: '',
           password: '',
           confirmPassword: '',
+          userType: '',
+          collegeName: '',
         });
       } else {
         showToastMessage('Registration failed. Please try again.', 'danger');
@@ -79,6 +92,7 @@ const RegisterPage = () => {
                     placeholder="Enter your full name"
                   />
                 </Form.Group>
+
                 <Form.Group className="mb-3">
                   <Form.Label><FaEnvelope className="me-2 text-primary" />Email</Form.Label>
                   <Form.Control
@@ -90,6 +104,7 @@ const RegisterPage = () => {
                     placeholder="Enter your email address"
                   />
                 </Form.Group>
+
                 <Form.Group className="mb-3">
                   <Form.Label><FaPhone className="me-2 text-primary" />Phone Number</Form.Label>
                   <Form.Control
@@ -101,6 +116,54 @@ const RegisterPage = () => {
                     placeholder="Enter your phone number"
                   />
                 </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label><FaUser className="me-2 text-primary" />User Type</Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="userType"
+                    value={formData.userType}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">Select User Type</option>
+                    <option value="College">College</option>
+                    <option value="Student">Student</option>
+                  </Form.Control>
+                </Form.Group>
+
+                {formData.userType === 'College' && (
+                  <Form.Group className="mb-3">
+                    <Form.Label><FaBuilding className="me-2 text-primary" />College Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="collegeName"
+                      value={formData.collegeName}
+                      onChange={handleChange}
+                      required
+                      placeholder="Enter your college name"
+                    />
+                  </Form.Group>
+                )}
+
+                {formData.userType === 'Student' && (
+                  <Form.Group className="mb-3">
+                    <Form.Label><FaBuilding className="me-2 text-primary" />Select College</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="collegeName"
+                      value={formData.collegeName}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">Select your college</option>
+                      {collegeList.map((college, index) => (
+                        <option key={index} value={college}>{college}</option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+                )}
+
                 <Form.Group className="mb-3">
                   <Form.Label><FaLock className="me-2 text-primary" />Password</Form.Label>
                   <Form.Control
@@ -112,6 +175,7 @@ const RegisterPage = () => {
                     placeholder="Enter your password"
                   />
                 </Form.Group>
+
                 <Form.Group className="mb-3">
                   <Form.Label><FaLock className="me-2 text-primary" />Confirm Password</Form.Label>
                   <Form.Control
@@ -123,6 +187,7 @@ const RegisterPage = () => {
                     placeholder="Confirm your password"
                   />
                 </Form.Group>
+
                 <Button variant="primary" type="submit" className="w-100 mt-3">
                   <FaUserPlus className="me-2" /> Register
                 </Button>
@@ -130,8 +195,9 @@ const RegisterPage = () => {
             </div>
           </div>
         </div>
+
         <div className="col-md-6 d-none d-md-block">
-          <Image src="register1.png" alt="Registration" fluid rounded className="" />
+          <Image src="register1.png" alt="Registration" fluid rounded />
         </div>
       </div>
 

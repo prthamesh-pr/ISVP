@@ -6,61 +6,62 @@ import '../HomePage.css'; // You'll need to create this CSS file
 const HomePage = () => {
   return (
     <div className="home-page">
-      <Carousel fade className="full-screen-carousel">
-        <Carousel.Item>
+      <Carousel fade controls={false} pause="hover" className="full-screen-carousel">
+        <Carousel.Item interval={3000}> 
           <div 
             className="carousel-image"
-            style={{backgroundImage: `url('bg5.png')`}}
+            style={{backgroundImage: 'url("bg5.png")'}} 
           />
-          <Carousel.Caption>
+          <Carousel.Caption className="carousel-caption">
             <h1 className="main-title">Welcome to Scholarship Portal</h1>
             <h3>Discover Opportunities</h3>
             <p>Find scholarships that match your profile</p>
+
           </Carousel.Caption>
         </Carousel.Item>
-        <Carousel.Item>
-          <div 
-            className="carousel-image"
-            style={{backgroundImage: `url('bg4.jpg')`}}
-          />
-          <Carousel.Caption>
-            <h1 className="main-title">Welcome to Scholarship Portal</h1>
-            <h3>Apply with Ease</h3>
-            <p>Streamlined application process for your convenience</p>
-          </Carousel.Caption>
-        </Carousel.Item>
-        <Carousel.Item>
-          <div 
-            className="carousel-image"
-            style={{backgroundImage: `url('bg3.jpg')`}}
-          />
-          <Carousel.Caption>
-            <h1 className="main-title">Welcome to Scholarship Portal</h1>
-            <h3>Track Your Progress</h3>
-            <p>Stay updated on your scholarship applications</p>
-          </Carousel.Caption>
-        </Carousel.Item>
+        {/* Other Carousel Items */}
       </Carousel>
-      
-      <div className="container mt-5 mb-5">
-        <div className="row">
-          <div className="col-md-4 text-center">
-            <FaGraduationCap size={50} className="text-primary mb-3" />
-            <h4>Scholarships</h4>
-            <p>Browse through thousands of scholarships</p>
-          </div>
-          <div className="col-md-4 text-center">
+
+      <section className="features py-5"> 
+        <div className="container">
+          <div className="row">
+            <div className="col-md-4 mb-4 text-center">
+              <div className="feature-box"> 
+                <FaGraduationCap size={50} className="text-primary mb-3" />
+                <h4>Scholarships</h4>
+                <p>Browse through thousands of scholarships.</p>
+              </div>
+              
+            </div>
+
+
+           <div className="col-md-4 mb-4 text-center">
+            <div className="feature-box"> 
             <FaBook size={50} className="text-success mb-3" />
             <h4>Resources</h4>
             <p>Access helpful guides and tutorials</p>
           </div>
-          <div className="col-md-4 text-center">
+  
+              
+          </div>
+
+
+          <div className="col-md-4 mb-4 text-center">
+            <div className="feature-box"> 
             <FaUniversity size={50} className="text-warning mb-3" />
             <h4>Universities</h4>
             <p>Explore partner institutions</p>
           </div>
+  
+              
+          </div>
+
+            {/* Other Feature Columns */}
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Other Sections */}
     </div>
   );
 };

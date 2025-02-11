@@ -3,8 +3,9 @@ import { FaUsers, FaChartLine, FaHandshake } from 'react-icons/fa';
 
 const AboutUsPage = () => {
   return (
-    <div className="container mt-5">
-      <h1 className="text-center mb-4">About Us</h1>
+    <div className="container mt-5 shadow-lg border p-2" style={{marginTop:"20px"}}>
+      <br></br>
+      <br></br>
       <div className="row">
         <div className="col-md-6">
           <img

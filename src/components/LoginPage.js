@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form, Button, Toast, ToastContainer, Image } from 'react-bootstrap';
 import { FaEnvelope, FaLock, FaSignInAlt } from 'react-icons/fa';
 import { getDatabase, ref, get } from 'firebase/database';
+import Cookies from 'js-cookie'; 
 
-const LoginPage = () => {
+const LoginPage = (props) => {
+  const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
-    email: '',
+    phoneNumber: '',
     password: '',
     userType: 'student', // Default to student
   });
@@ -30,26 +33,40 @@ const LoginPage = () => {
         snapshot.forEach((childSnapshot) => {
           const userData = childSnapshot.val();
           if (
-            userData.email === formData.email &&
+            userData.phoneNumber === formData.phoneNumber &&
             userData.password === formData.password &&
-            userData.userType === formData.userType // Check user type
+            userData.userType === formData.userType
           ) {
             userFound = true;
             showToastMessage('Login successful!', 'success');
-            // Typically, you'd set the user session or redirect to a dashboard
-            console.log('Login successful!');
-            return;
+
+            // Set cookies for user data
+            Cookies.set('userName', userData.name);
+            Cookies.set('userEmail', userData.email);
+            Cookies.set('userPhoneNumber', userData.phoneNumber);
+            Cookies.set('userType', userData.userType);
+            Cookies.set('collegeName', userData.collegeName || ''); 
+            Cookies.set('collegeCenterCode', userData.collegeCenterCode || '');
+
+            // Update login state and navigate based on user type
+            props.setlogin(true);
+            if (userData.userType === 'college') {
+              navigate('/dashboard-college');
+            } else {
+              navigate('/dashboard-student');
+            }
           }
         });
 
         if (!userFound) {
-          showToastMessage('Invalid email, password, or user type', 'danger');
+          showToastMessage('Invalid phone number, password, or user type', 'danger');
         }
       } else {
         showToastMessage('No users found', 'danger');
       }
     } catch (error) {
       showToastMessage('An error occurred during login.', 'danger');
+      console.error("Login Error:", error); // Log the error for debugging
     }
   };
 
@@ -74,18 +91,24 @@ const LoginPage = () => {
               </h2>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
-                  <Form.Label><FaEnvelope className="me-2 text-primary" />Email</Form.Label>
+                  <Form.Label>
+                    <FaEnvelope className="me-2 text-primary" />
+                    Phone Number
+                  </Form.Label>
                   <Form.Control
-                    type="email"
-                    name="email"
-                    value={formData.email}
+                    type="tel"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
                     onChange={handleChange}
                     required
-                    placeholder="Enter your email address"
+                    placeholder="Enter your phone number"
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label><FaLock className="me-2 text-primary" />Password</Form.Label>
+                  <Form.Label>
+                    <FaLock className="me-2 text-primary" />
+                    Password
+                  </Form.Label>
                   <Form.Control
                     type="password"
                     name="password"
@@ -96,7 +119,10 @@ const LoginPage = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label><FaLock className="me-2 text-primary" />User Type</Form.Label>
+                  <Form.Label>
+                    <FaLock className="me-2 text-primary" />
+                    User Type
+                  </Form.Label>
                   <Form.Select
                     name="userType"
                     value={formData.userType}
@@ -105,27 +131,23 @@ const LoginPage = () => {
                   >
                     <option value="student">Student</option>
                     <option value="college">College</option>
-
                   </Form.Select>
                 </Form.Group>
                 <Button variant="primary" type="submit" className="w-100 mt-3">
                   <FaSignInAlt className="me-2" /> Login
                 </Button>
               </Form>
-              <div className="text-center mt-3">
-                <a href="#" className="text-decoration-none">Forgot Password?</a>
-              </div>
             </div>
           </div>
         </div>
       </div>
 
       <ToastContainer position="top-end" className="p-3">
-        <Toast 
-          onClose={() => setShowToast(false)} 
-          show={showToast} 
-          delay={3000} 
-          autohide 
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+          delay={3000}
+          autohide
           bg={toastVariant}
         >
           <Toast.Header closeButton={false}>
@@ -143,3 +165,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+

@@ -32,7 +32,7 @@ import {
   FaDownload
 } from "react-icons/fa";
 import { toast } from "react-toastify";
-import DashboardHeading from "./DashboardHeading";
+
 
 const ProfileDocuments = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -242,7 +242,7 @@ const ProfileDocuments = () => {
 
   return (
     <>
-      <DashboardHeading text="Manage Profile" />
+      
       <motion.div
         className="container mt-4 mb-5 px-4"
         initial={{ opacity: 0 }}

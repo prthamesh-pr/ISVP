@@ -1,7 +1,199 @@
-.nav-icon {
-  margin-right: 5px;
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Navbar styling */
+.custom-navbar {
+  font-family: 'Poppins', sans-serif;
+  padding: 15px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.navbar-nav .nav-link {
-  padding: 0.5rem 1rem;
+.navbar-container {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Brand/logo styling */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.navbar-logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #6366F1; /* Purple color matching your image */
+  margin-bottom: -5px;
+}
+
+.brand-portal {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: #A5B4FC; /* Lighter purple */
+}
+
+/* Mobile toggle button */
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #6366F1;
+  cursor: pointer;
+}
+
+/* Nav menu */
+.navbar-menu {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  flex-direction: row; /* Ensure horizontal layout */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.nav-item {
+  margin: 0 5px;
+  position: relative;
+  display: flex; /* Ensure each item uses flexbox */
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  color: #4B5563; /* Dark gray text */
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  white-space: nowrap; /* Prevent text wrapping within buttons */
+}
+
+.nav-link:hover {
+  background-color: #F3F4F6; /* Light gray background on hover */
+}
+
+.nav-icon {
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+/* Login button styling */
+.login-btn {
+  background-color: #6366F1; /* Purple color matching your image */
+  color: white !important;
+  padding: 8px 20px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(99, 102, 241, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-btn:hover {
+  background-color: #4F46E5; /* Darker purple on hover */
+}
+
+/* For the register link in your image */
+.register-link {
+  color: #6B7280; /* Medium gray */
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive styles */
+@media (max-width: 991px) {
+  .mobile-toggle {
+    display: block;
+  }
+
+  .navbar-menu {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+  }
+
+  .navbar-menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .navbar-nav {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  /* On mobile, we can either stack vertically or maintain horizontal layout */
+  /* Option 1: Stack vertically on mobile */
+  .navbar-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .nav-item {
+    margin: 5px 0;
+    width: 100%;
+  }
+
+  /* Option 2: Keep horizontal but enable wrapping (uncomment to use) */
+  /*
+  .navbar-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .nav-item {
+    margin: 5px;
+  }
+  */
+
+  .nav-link, .login-btn, .register-link {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }

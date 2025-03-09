@@ -14,7 +14,6 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import DashboardHeading from "./DashboardHeading";
 
 const ProfileCollege = () => {
   const [collegeData, setCollegeData] = useState({
@@ -86,7 +85,7 @@ const ProfileCollege = () => {
 
   return (
     <>
-    <DashboardHeading text="Manage Profile" />
+    
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}

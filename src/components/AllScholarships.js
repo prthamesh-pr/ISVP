@@ -3,12 +3,27 @@ import React, { useEffect, useState } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../firebase';
 import Cookies from 'js-cookie';
-import DashboardHeading from './DashboardHeading';
+import { 
+  FaSearch, 
+  FaInfoCircle, 
+  FaGift, 
+  FaCheckCircle, 
+  FaClock, 
+  FaFileAlt, 
+  FaCheckSquare, 
+  FaCalendarAlt,
+  FaFilter,
+  FaSortAmountDown,
+  FaGraduationCap
+} from 'react-icons/fa';
 import '../AllScholarship.css'; 
 
 const AllScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [sortBy, setSortBy] = useState('deadline'); // 'deadline', 'name', 'posted'
+  const [isLoading, setIsLoading] = useState(true);
   const collegeCode = Cookies.get('collegeCenterCode');
 
   useEffect(() => {
@@ -22,93 +37,223 @@ const AllScholarships = () => {
         }));
         setScholarships(scholarshipsList);
       }
+      setIsLoading(false);
     });
   }, [collegeCode]);
 
+  // Filter scholarships based on search term
   const filteredScholarships = scholarships.filter(scholarship =>
     scholarship.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  return (
-    <>
-    <DashboardHeading text="Available Scholarships" />
+  // Sort scholarships
+  const sortedScholarships = [...filteredScholarships].sort((a, b) => {
+    if (sortBy === 'deadline') {
+      return new Date(a.endDate) - new Date(b.endDate);
+    } else if (sortBy === 'name') {
+      return a.name.localeCompare(b.name);
+    } else if (sortBy === 'posted') {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    }
+    return 0;
+  });
 
-      <div className="container" style={{marginTop:"135px"}}>
-        {/* Search Bar */}
-        <div className="row mb-4">
-          <div className="col-md-6 mx-auto">
-            <div className="input-group">
-              <span className="input-group-text bg-primary text-white">
-                <i className="fas fa-search"></i>
-              </span>
+  // Calculate days remaining until deadline
+  const getDaysRemaining = (endDate) => {
+    const today = new Date();
+    const deadline = new Date(endDate);
+    const diffTime = deadline - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+
+  // Get badge color based on days remaining
+  const getDeadlineBadgeColor = (days) => {
+    if (days < 0) return 'expired';
+    if (days <= 7) return 'urgent';
+    if (days <= 30) return 'soon';
+    return 'plenty';
+  };
+
+  return (
+    <div className="scholarships-page mt-5">
+     
+
+      <div className="container scholarship-container">
+        {/* Search and Filter Bar */}
+        <div className="search-filter-container">
+          <div className="search-container">
+            <div className="search-input-wrapper">
+              <FaSearch className="search-icon" />
               <input
                 type="text"
-                className="form-control"
-                placeholder="Search scholarships..."
+                className="search-input"
+                placeholder="Search scholarships by name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
+          
+          <div className="filter-container">
+            <button 
+              className="filter-button" 
+              onClick={() => setFilterOpen(!filterOpen)}
+            >
+              <FaFilter /> Filter & Sort
+            </button>
+            
+            {filterOpen && (
+              <div className="filter-dropdown">
+                <div className="sort-options">
+                  <h6>Sort By</h6>
+                  <div className="sort-buttons">
+                    <button 
+                      className={`sort-button ${sortBy === 'deadline' ? 'active' : ''}`} 
+                      onClick={() => setSortBy('deadline')}
+                    >
+                      <FaClock /> Deadline
+                    </button>
+                    <button 
+                      className={`sort-button ${sortBy === 'name' ? 'active' : ''}`} 
+                      onClick={() => setSortBy('name')}
+                    >
+                      <FaSortAmountDown /> Name
+                    </button>
+                    <button 
+                      className={`sort-button ${sortBy === 'posted' ? 'active' : ''}`} 
+                      onClick={() => setSortBy('posted')}
+                    >
+                      <FaCalendarAlt /> Recently Posted
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
+        {/* Scholarship Stats */}
+        <div className="scholarship-stats">
+          <div className="stat-card">
+            <div className="stat-icon">
+              <FaGraduationCap />
+            </div>
+            <div className="stat-info">
+              <h3>{scholarships.length}</h3>
+              <p>Total Scholarships</p>
+            </div>
+          </div>
+          
+          <div className="stat-card">
+            <div className="stat-icon">
+              <FaClock />
+            </div>
+            <div className="stat-info">
+              <h3>{scholarships.filter(s => getDaysRemaining(s.endDate) <= 7 && getDaysRemaining(s.endDate) >= 0).length}</h3>
+              <p>Closing This Week</p>
+            </div>
+          </div>
+          
+          <div className="stat-card">
+            <div className="stat-icon">
+              <FaCalendarAlt />
+            </div>
+            <div className="stat-info">
+              <h3>{scholarships.filter(s => {
+                const posted = new Date(s.createdAt);
+                const now = new Date();
+                const diffTime = now - posted;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                return diffDays <= 30;
+              }).length}</h3>
+              <p>Recently Added</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Loading State */}
+        {isLoading && (
+          <div className="loading-container">
+            <div className="spinner"></div>
+            <p>Loading scholarships...</p>
+          </div>
+        )}
+
         {/* Scholarships Grid */}
-        <div className="row">
-          {filteredScholarships.map((scholarship) => (
-            <div key={scholarship.id} className="col-lg-12 mb-4">
-              <div className="card shadow-sm hover-shadow transition-all">
-                <div className="card-header bg-primary text-white">
-                  <h5 className="card-title mb-0">{scholarship.name}</h5>
-                </div>
-                <div className="card-body">
-                  <div className="row">
-                    <div className="col-md-8">
-                      <div className="mb-4">
-                        <h6 className="text-primary">
-                          <i className="fas fa-info-circle me-2"></i>Description
+        {!isLoading && (
+          <div className="scholarships-grid">
+            {sortedScholarships.map((scholarship) => {
+              const daysRemaining = getDaysRemaining(scholarship.endDate);
+              const deadlineClass = getDeadlineBadgeColor(daysRemaining);
+              
+              return (
+                <div key={scholarship.id} className="scholarship-card">
+                  <div className="scholarship-header">
+                    <h2>{scholarship.name}</h2>
+                    <div className={`deadline-badge ${deadlineClass}`}>
+                      {daysRemaining < 0 ? (
+                        'Expired'
+                      ) : daysRemaining === 0 ? (
+                        'Last Day'
+                      ) : (
+                        `${daysRemaining} days left`
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="scholarship-content">
+                    <div className="scholarship-main">
+                      <div className="scholarship-section">
+                        <h6>
+                          <FaInfoCircle className="section-icon" />
+                          Description
                         </h6>
-                        <p className="card-text text-muted">{scholarship.description}</p>
+                        <p>{scholarship.description}</p>
                       </div>
                       
-                      <div className="mb-4">
-                        <h6 className="text-success">
-                          <i className="fas fa-gift me-2"></i>Benefits
+                      <div className="scholarship-section">
+                        <h6>
+                          <FaGift className="section-icon" />
+                          Benefits
                         </h6>
-                        <p className="card-text text-muted">{scholarship.benefits}</p>
+                        <p>{scholarship.benefits}</p>
                       </div>
-
-                      <div>
-                        <h6 className="text-info">
-                          <i className="fas fa-check-circle me-2"></i>Eligibility Criteria
+                      
+                      <div className="scholarship-section">
+                        <h6>
+                          <FaCheckCircle className="section-icon" />
+                          Eligibility Criteria
                         </h6>
-                        <p className="card-text text-muted">{scholarship.eligibilityCriteria}</p>
+                        <p>{scholarship.eligibilityCriteria}</p>
                       </div>
                     </div>
-
-                    <div className="col-md-4">
-                      <div className="alert alert-warning">
-                        <h6 className="alert-heading">
-                          <i className="fas fa-clock me-2"></i>Application Deadline
+                    
+                    <div className="scholarship-sidebar">
+                      <div className="deadline-container">
+                        <h6>
+                          <FaClock className="section-icon" />
+                          Application Deadline
                         </h6>
-                        <hr />
-                        <strong>{new Date(scholarship.endDate).toLocaleDateString('en-US', {
-                          weekday: 'long',
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}</strong>
+                        <p className="deadline-date">
+                          {new Date(scholarship.endDate).toLocaleDateString('en-US', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </p>
                       </div>
-
-                      <div className="card border-info">
-                        <div className="card-header bg-info text-white">
-                          <h6 className="mb-0">
-                            <i className="fas fa-file-alt me-2"></i>Required Documents
-                          </h6>
-                        </div>
-                        <ul className="list-group list-group-flush">
+                      
+                      <div className="documents-container">
+                        <h6>
+                          <FaFileAlt className="section-icon" />
+                          Required Documents
+                        </h6>
+                        <ul className="documents-list">
                           {scholarship.requiredDocuments?.map((doc, index) => (
-                            <li key={index} className="list-group-item">
-                              <i className="fas fa-check-square me-2 text-success"></i>
+                            <li key={index}>
+                              <FaCheckSquare className="document-icon" />
                               {doc}
                             </li>
                           ))}
@@ -116,31 +261,47 @@ const AllScholarships = () => {
                       </div>
                     </div>
                   </div>
+                  
+                  <div className="scholarship-footer">
+                    <div className="posted-date">
+                      <FaCalendarAlt className="footer-icon" />
+                      Posted on: {new Date(scholarship.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </div>
+                    
+                  </div>
                 </div>
-                <div className="card-footer bg-light">
-                  <small className="text-muted">
-                    <i className="fas fa-calendar-alt me-2"></i>
-                    Posted on: {new Date(scholarship.createdAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </small>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              );
+            })}
+          </div>
+        )}
 
-        {filteredScholarships.length === 0 && (
-          <div className="alert alert-info text-center">
-            <i className="fas fa-info-circle me-2"></i>
-            No scholarships are currently available from your college.
+        {!isLoading && sortedScholarships.length === 0 && (
+          <div className="no-scholarships">
+            <div className="no-scholarships-icon">
+              <FaInfoCircle />
+            </div>
+            <h3>No Scholarships Found</h3>
+            <p>
+              {searchTerm 
+                ? `No scholarships match your search term "${searchTerm}"`
+                : "No scholarships are currently available from your college"}
+            </p>
+            {searchTerm && (
+              <button 
+                className="clear-search-button"
+                onClick={() => setSearchTerm('')}
+              >
+                Clear Search
+              </button>
+            )}
           </div>
         )}
       </div>
-
-    </>
+    </div>
   );
 };
 

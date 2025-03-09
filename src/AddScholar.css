@@ -1,39 +1,343 @@
-/* Add this to your CSS file */
-.card {
-    border-radius: 15px;
-    border: none;
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.add-scholarship-page {
+  font-family: 'Poppins', sans-serif;
+  padding-top: 80px; /* Space for navbar */
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.scholarship-form-container {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+}
+
+/* Form Card */
+.scholarship-form-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scholarship-form-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Header section */
+.scholarship-form-header {
+  background: linear-gradient(to right, #6366F1, #8B5CF6);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.header-icon {
+  width: 70px;
+  height: 70px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 2rem;
+  color: #6366F1;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.scholarship-form-header h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.scholarship-form-header p {
+  opacity: 0.8;
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Form body */
+.scholarship-form-body {
+  padding: 2rem;
+}
+
+.scholarship-form {
+  width: 100%;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: #4B5563;
+}
+
+.form-icon {
+  color: #6366F1;
+}
+
+.form-input {
+  padding: 12px 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #6366F1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 15px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.tip-icon {
+  color: #6366F1;
+  margin-top: 3px;
+}
+
+.form-tip span {
+  font-size: 0.85rem;
+  color: #6B7280;
+}
+
+/* Document input section */
+.document-input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.add-document-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 20px;
+  background-color: #6366F1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 45px;
+}
+
+.add-document-button:hover {
+  background-color: #4F46E5;
+}
+
+.document-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+  min-height: 60px;
+  padding: 10px;
+  border: 1px dashed #e2e8f0;
+  border-radius: 8px;
+}
+
+.document-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #EEF2FF;
+  color: #4F46E5;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.document-icon {
+  font-size: 0.8rem;
+}
+
+.remove-document-button {
+  background: none;
+  border: none;
+  color: #6B7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-left: 5px;
+  transition: color 0.2s ease;
+}
+
+.remove-document-button:hover {
+  color: #DC2626;
+}
+
+.empty-documents {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 60px;
+  color: #9CA3AF;
+}
+
+.empty-icon {
+  font-size: 1.2rem;
+}
+
+/* Form actions */
+.form-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(to right, #6366F1, #8B5CF6);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+}
+
+.submit-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+}
+
+.submit-button:disabled {
+  background: #A5B4FC;
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.button-icon {
+  font-size: 1.1rem;
+}
+
+.button-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Toast styling */
+.success-toast {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.success-toast .toast-header {
+  background: linear-gradient(to right, #10B981, #34D399);
+  color: white;
+  border-bottom: none;
+  padding: 0.75rem 1rem;
+}
+
+.toast-icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.toast-close-button {
+  background: none;
+  border: none;
+  color: white;
+  opacity: 0.8;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.toast-close-button:hover {
+  opacity: 1;
+}
+
+.success-toast .toast-body {
+  background: white;
+  padding: 1rem;
+}
+
+.toast-message {
+  color: #10B981;
+  font-weight: 500;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
   
-  .form-control {
-    border-radius: 8px;
-    padding: 0.75rem;
-    border: 1px solid #ced4da;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  .scholarship-form-header {
+    padding: 1.5rem;
   }
   
-  .form-control:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  .scholarship-form-body {
+    padding: 1.5rem;
   }
   
-  .btn-primary {
-    border-radius: 8px;
-    padding: 0.75rem 1.5rem;
-    font-weight: 500;
+  .header-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.6rem;
   }
-  
-  .document-list {
-    min-height: 50px;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-  }
-  
-  .badge {
-    font-size: 0.9rem;
-    font-weight: normal;
-  }
-  
-  .toast {
-    border-radius: 10px;
-  }
-  
+}

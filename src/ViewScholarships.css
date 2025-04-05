@@ -630,3 +630,278 @@
       width: 100%;
     }
   }
+
+  /* Add these styles to your ViewScholarships.css file */
+
+/* Dynamic Fields Section in Table */
+.scholarship-fields-cell {
+  min-width: 120px;
+}
+
+.dynamic-fields-count {
+  display: flex;
+  align-items: center;
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+.fields-icon {
+  color: #4a6bdf;
+  margin-right: 0.5rem;
+}
+
+.no-fields {
+  color: #9ca3af;
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+/* Dynamic Fields Editor in Modal */
+.dynamic-fields-editor {
+  margin-top: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f9fafb;
+  cursor: pointer;
+  user-select: none;
+}
+
+.section-icon {
+  color: #4a6bdf;
+  margin-right: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.section-header h4 {
+  margin: 0;
+  flex-grow: 1;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-button:hover {
+  color: #4b5563;
+}
+
+.dynamic-fields-section {
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.section-description {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+.dynamic-fields-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dynamic-field-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: #f9fafb;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.field-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-input small {
+  color: #6b7280;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.field-required {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0.5rem;
+}
+
+.add-field-button {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #4a6bdf;
+  border: none;
+  margin-top: 0.5rem;
+}
+
+.add-field-button:hover {
+  background-color: #3b55b5;
+}
+
+.dynamic-fields-list {
+  margin-top: 1.5rem;
+}
+
+.dynamic-fields-list h5 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #374151;
+}
+
+.fields-table {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.fields-header {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1.5fr 1fr 0.75fr;
+  background-color: #f3f4f6;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.fields-table .field-row {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1.5fr 1fr 0.75fr;
+  border-top: 1px solid #e5e7eb;
+}
+
+.field-cell {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  color: #4b5563;
+}
+
+.remove-field-button {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background-color 0.2s ease;
+}
+
+.remove-field-button:hover {
+  background-color: #dc2626;
+}
+
+.no-fields-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  color: #6b7280;
+}
+
+.no-fields-icon {
+  color: #9ca3af;
+  font-size: 1.25rem;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 992px) {
+  .dynamic-field-inputs .field-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .fields-table .field-row,
+  .fields-header {
+    grid-template-columns: 1.5fr 2fr 1fr 1fr 0.5fr;
+  }
+  
+  .field-cell {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .fields-table {
+    font-size: 0.85rem;
+  }
+  
+  .add-field-button {
+    width: 100%;
+  }
+  
+  .scholarship-fields-cell {
+    white-space: nowrap;
+  }
+  
+  .section-header h4 {
+    font-size: 1rem;
+  }
+}
+
+/* Modal adjustments for smaller screens */
+@media screen and (max-width: 576px) {
+  .scholarship-modal .modal-dialog {
+    max-width: 95%;
+    margin: 0.5rem auto;
+  }
+  
+  .fields-table .field-row,
+  .fields-header {
+    grid-template-columns: 1fr 1fr 0.75fr;
+  }
+  
+  .fields-header .field-cell:nth-child(4),
+  .fields-header .field-cell:nth-child(5),
+  .field-row .field-cell:nth-child(4),
+  .field-row .field-cell:nth-child(5) {
+    display: none;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-actions .btn {
+    width: 100%;
+  }
+}

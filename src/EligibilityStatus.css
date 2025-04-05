@@ -796,3 +796,431 @@
       margin-top: 1.5rem;
     }
   }
+
+  .dynamic-fields-section {
+    margin-top: 2rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+  }
+  
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .section-icon {
+    font-size: 1.8rem;
+    color: #4a6bdf;
+    margin-right: 1rem;
+  }
+  
+  .section-description {
+    color: #6b7280;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+  
+  .dynamic-fields-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .dynamic-field-input-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .field-input {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .field-input label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+  }
+  
+  .field-input input,
+  .field-input select {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
+  }
+  
+  .field-input input:focus,
+  .field-input select:focus {
+    border-color: #4a6bdf;
+    outline: none;
+  }
+  
+  .field-required {
+    display: flex;
+    align-items: center;
+  }
+  
+  .add-field-button {
+    background-color: #4a6bdf;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    margin-top: 1rem;
+  }
+  
+  .add-field-button svg {
+    margin-right: 0.5rem;
+  }
+  
+  .add-field-button:hover {
+    background-color: #3b55b5;
+  }
+  
+  .fields-table {
+    width: 100%;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    margin-top: 1rem;
+  }
+  
+  .fields-header {
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr 1fr 1fr;
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: #4b5563;
+  }
+  
+  .field-row {
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr 1fr 1fr;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  .field-cell {
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .remove-field-button {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .remove-field-button:hover {
+    background-color: #dc2626;
+  }
+  
+  .empty-fields {
+    display: flex;
+    align-items: center;
+    color: #6b7280;
+    margin-top: 1rem;
+  }
+  .empty-fields .empty-icon {
+    margin-right: 0.5rem;
+    color: #9ca3af;
+  }
+  
+  /* Custom Fields Display in Scholarship Card */
+  .custom-fields-box {
+    margin-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1rem;
+  }
+  
+  .custom-fields-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+  }
+  
+  .custom-fields-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+  }
+  
+  .field-label {
+    font-size: 0.9rem;
+  }
+  
+  .required-marker {
+    color: #ef4444;
+    margin-left: 0.25rem;
+  }
+  
+  /* Dynamic Fields in Application Modal */
+  .dynamic-fields-form {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  .form-section-icon {
+    margin-right: 0.5rem;
+    color: #4a6bdf;
+  }
+  
+  .dynamic-fields-container {
+    display: grid;
+    grid-gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .dynamic-field-item {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dynamic-field-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+  }
+  
+  .dynamic-field-item input,
+  .dynamic-field-item select {
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .dynamic-field-item input:focus,
+  .dynamic-field-item select:focus {
+    border-color: #4a6bdf;
+    outline: none;
+  }
+  
+  .file-upload-field {
+    position: relative;
+  }
+  
+  .file-input {
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+  }
+  
+  .file-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    background-color: #f3f4f6;
+    border: 1px dashed #d1d5db;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #6b7280;
+    transition: all 0.2s ease;
+  }
+  
+  .file-label:hover {
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
+    color: #4b5563;
+  }
+  
+  /* Application Status Badges and Buttons */
+  .applied-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    z-index: 1;
+  }
+  
+  .applied-badge.pending {
+    background-color: #fef3c7;
+    color: #d97706;
+  }
+  
+  .applied-badge.approved {
+    background-color: #d1fae5;
+    color: #059669;
+  }
+  
+  .applied-badge.rejected {
+    background-color: #fee2e2;
+    color: #dc2626;
+  }
+  
+  .applied-badge svg {
+    margin-right: 0.5rem;
+  }
+  
+  .application-button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  
+  .application-button.pending {
+    background-color: #f3f4f6;
+    color: #4b5563;
+  }
+  
+  .application-button.approved {
+    background-color: #d1fae5;
+    color: #059669;
+    cursor: default;
+  }
+  
+  .application-button.rejected {
+    background-color: #fee2e2;
+    color: #dc2626;
+  }
+  
+  .application-button svg {
+    margin-right: 0.5rem;
+  }
+  
+  .application-button:hover:not(:disabled) {
+    filter: brightness(0.95);
+  }
+  
+  .application-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .applications-status {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  
+  .status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9fafb;
+    padding: 0.75rem 0.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  .status-item.pending {
+    background-color: #fffbeb;
+  }
+  
+  .status-item.approved {
+    background-color: #ecfdf5;
+  }
+  
+  .status-item.rejected {
+    background-color: #fef2f2;
+  }
+  
+  .count-number {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  
+  .count-text {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+  
+  /* Re-Apply Notice */
+  .scholarship-card.rejected {
+    border-left: 4px solid #ef4444;
+  }
+  
+  /* Enhanced Apply Modal */
+  .apply-modal {
+    width: 600px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .applications-status {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .profile-sidebar {
+      margin-bottom: 1.5rem;
+    }
+    
+    .main-content {
+      flex-direction: column;
+    }
+    
+    .scholarship-body {
+      flex-direction: column;
+    }
+    
+    .scholarship-sidebar {
+      margin-top: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .applied-badge {
+      position: relative;
+      top: 0;
+      right: 0;
+      margin-bottom: 1rem;
+      justify-content: center;
+    }
+    
+    .scholarship-header {
+      flex-direction: column;
+    }
+    
+    .deadline-badge {
+      margin-top: 1rem;
+      align-self: flex-start;
+    }
+  }

@@ -340,4 +340,159 @@ textarea.form-input {
     height: 60px;
     font-size: 1.6rem;
   }
+  
+}
+
+/* Dynamic Fields Section */
+.dynamic-fields-section {
+  margin-top: 2rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.section-icon {
+  font-size: 1.8rem;
+  color: #4a6bdf;
+  margin-right: 1rem;
+}
+
+.section-description {
+  color: #6b7280;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.dynamic-fields-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.dynamic-field-input-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.field-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-input label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+}
+
+.field-input input,
+.field-input select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.field-input input:focus,
+.field-input select:focus {
+  border-color: #4a6bdf;
+  outline: none;
+}
+
+.field-required {
+  display: flex;
+  align-items: center;
+}
+
+.add-field-button {
+  background-color: #4a6bdf;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  margin-top: 1rem;
+}
+
+.add-field-button svg {
+  margin-right: 0.5rem;
+}
+
+.add-field-button:hover {
+  background-color: #3b55b5;
+}
+
+.fields-table {
+  width: 100%;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  margin-top: 1rem;
+}
+
+.fields-header {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr 1fr 1fr;
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr 1fr 1fr;
+  border-top: 1px solid #e5e7eb;
+}
+
+.field-cell {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.remove-field-button {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background-color 0.2s ease;
+}
+
+.remove-field-button:hover {
+  background-color: #dc2626;
+}
+
+.empty-fields {
+  display: flex;
+  align-items: center;
+  color: #6b7280;
+  margin-top: 1rem;
+}
+
+.empty-fields .empty-icon {
+  margin-right: 0.5rem;
+  color: #9ca3af;
 }

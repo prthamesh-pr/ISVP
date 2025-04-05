@@ -842,3 +842,302 @@
       grid-template-columns: 1fr;
     }
   }
+
+  .dynamic-fields-section {
+    margin-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1.5rem;
+  }
+  
+  .dynamic-fields-data {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+  
+  .dynamic-field-item {
+    display: flex;
+    flex-direction: column;
+    background-color: #f9fafb;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+  }
+  
+  .field-label {
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+  }
+  
+  .field-value {
+    font-size: 1rem;
+    color: #1f2937;
+  }
+  
+  .file-link {
+    display: flex;
+    align-items: center;
+    color: #4a6bdf;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  .file-link:hover {
+    text-decoration: underline;
+  }
+  
+  .file-icon {
+    margin-right: 0.5rem;
+  }
+  
+  /* Reapplication Badge */
+  .reapplication-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: #dbeafe;
+    color: #2563eb;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-left: 0.75rem;
+  }
+  
+  .reapplication-badge svg {
+    margin-right: 0.25rem;
+    font-size: 0.75rem;
+  }
+  
+  .history-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+    color: #4b5563;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .history-btn:hover {
+    background-color: #e5e7eb;
+  }
+  
+  .history-btn svg {
+    margin-right: 0.5rem;
+  }
+  
+  /* Application History Timeline */
+  .application-history {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  .history-icon {
+    margin-right: 0.5rem;
+    color: #4a6bdf;
+  }
+  
+  .history-timeline {
+    margin-top: 1rem;
+    position: relative;
+  }
+  
+  .history-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 12px;
+    width: 2px;
+    background-color: #e5e7eb;
+  }
+  
+  .history-item {
+    display: flex;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  .history-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  .history-marker {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #4a6bdf;
+    flex-shrink: 0;
+    margin-right: 1rem;
+    z-index: 1;
+  }
+  
+  .history-content {
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    flex-grow: 1;
+  }
+  
+  .history-date {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+  
+  .status-change {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  
+  .history-status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  
+  .history-status.pending {
+    background-color: #fef3c7;
+    color: #d97706;
+  }
+  
+  .history-status.approved {
+    background-color: #d1fae5;
+    color: #059669;
+  }
+  
+  .history-status.rejected {
+    background-color: #fee2e2;
+    color: #dc2626;
+  }
+  
+  .arrow-icon {
+    margin: 0 0.75rem;
+    color: #9ca3af;
+  }
+  
+  .history-message {
+    background-color: white;
+    border-left: 3px solid #e5e7eb;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-style: italic;
+    color: #4b5563;
+  }
+  
+  .history-message p {
+    margin: 0;
+  }
+  
+  .history-reviewer {
+    font-size: 0.85rem;
+    color: #6b7280;
+    text-align: right;
+  }
+  
+  /* Reapplication Notice */
+  .reapplication-notice {
+    display: flex;
+    align-items: center;
+    background-color: #dbeafe;
+    color: #1e40af;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  
+  .notice-icon {
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+  }
+  
+  /* Dynamic Fields in Review Modal */
+  .review-dynamic-fields {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  .fields-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .review-field-item {
+    background-color: #f9fafb;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+  }
+  
+  .review-field-label {
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .review-field-value {
+    color: #1f2937;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .dynamic-fields-data,
+    .fields-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .application-body {
+      flex-direction: column;
+    }
+    
+    .review-modal {
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .status-badge {
+      position: static;
+      margin-top: 0.5rem;
+      align-self: flex-start;
+    }
+    
+    .application-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .status-change {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .arrow-icon {
+      transform: rotate(90deg);
+      margin: 0.5rem 0;
+    }
+    
+    .modal-footer {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .reject-btn, 
+    .approve-btn {
+      width: 100%;
+    }
+  }

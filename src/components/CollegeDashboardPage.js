@@ -1,4 +1,4 @@
-// CollegeDashboardPage.js
+// CollegeDashboardPage.js with improved reapplication handling and dynamic fields support
 import React, { useEffect, useState } from 'react';
 import { ref, onValue, update } from 'firebase/database';
 import { database } from '../firebase';
@@ -21,7 +21,9 @@ import {
   FaThumbsUp,
   FaThumbsDown,
   FaEye,
-  FaExclamationCircle
+  FaExclamationCircle,
+  FaHistory,
+  FaClipboardList
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import '../CollegeDashboard.css';
@@ -38,6 +40,7 @@ const CollegeDashboardPage = () => {
   const [sortBy, setSortBy] = useState('date');
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [reviewStatus, setReviewStatus] = useState('');
+  const [applicationHistory, setApplicationHistory] = useState([]);
   const collegeCode = Cookies.get('collegeCenterCode');
   const collegeName = Cookies.get('collegeName') || '';
 
@@ -81,15 +84,30 @@ const CollegeDashboardPage = () => {
     setReviewStatus('loading');
     
     try {
+      // Save the current state in history if this is a reapplication or status change
       const applicationRef = ref(
         database, 
         `applications/${currentApplication.userPhoneNumber.replace('.', '_')}/${currentApplication.id}`
       );
       
+      // Create history entry
+      const historyEntry = {
+        previousStatus: currentApplication.status,
+        newStatus: status,
+        date: new Date().toISOString(),
+        reviewMessage: reviewMessage,
+        reviewedBy: collegeName // Add reviewer info
+      };
+      
+      // Update the application with new status and add to history
       await update(applicationRef, {
         status: status,
         reviewDate: new Date().toISOString(),
-        reviewMessage: reviewMessage
+        reviewMessage: reviewMessage,
+        // Append new history entry to existing history or create a new history array
+        statusHistory: currentApplication.statusHistory 
+          ? [...currentApplication.statusHistory, historyEntry] 
+          : [historyEntry]
       });
       
       setReviewStatus('success');
@@ -97,12 +115,20 @@ const CollegeDashboardPage = () => {
       // Update local state
       const updatedApplications = applications.map(app => {
         if (app.id === currentApplication.id) {
-          return {
+          const updatedApp = {
             ...app,
             status: status,
             reviewDate: new Date().toISOString(),
-            reviewMessage: reviewMessage
+            reviewMessage: reviewMessage,
+            statusHistory: app.statusHistory 
+              ? [...app.statusHistory, historyEntry] 
+              : [historyEntry]
           };
+          
+          // Set the application history for display in the modal
+          setApplicationHistory(updatedApp.statusHistory || []);
+          
+          return updatedApp;
         }
         return app;
       });
@@ -116,6 +142,7 @@ const CollegeDashboardPage = () => {
         setCurrentApplication(null);
         setReviewMessage('');
         setReviewStatus('');
+        setApplicationHistory([]);
       }, 1500);
     } catch (error) {
       console.error("Error updating application status:", error);
@@ -127,6 +154,7 @@ const CollegeDashboardPage = () => {
   const openReviewModal = (application) => {
     setCurrentApplication(application);
     setReviewMessage(application.reviewMessage || '');
+    setApplicationHistory(application.statusHistory || []);
     setShowReviewModal(true);
   };
 
@@ -186,15 +214,36 @@ const CollegeDashboardPage = () => {
     });
   };
 
+  // Check if an application is a reapplication
+  const isReapplication = (application) => {
+    return application.reapplied === true || (application.statusHistory && application.statusHistory.length > 0);
+  };
+
   // Handle search and filter changes
   useEffect(() => {
     applyFilters();
   }, [searchTerm, statusFilter, sortBy]);
 
+  // Display field value based on type
+  const renderDynamicFieldValue = (field, value) => {
+    if (!value) return "Not provided";
+    
+    switch (field.type) {
+      case 'date':
+        return formatDate(value);
+      case 'file':
+        return (
+          <a href={value} target="_blank" rel="noopener noreferrer" className="file-link">
+            <FaFileAlt className="file-icon" /> View File
+          </a>
+        );
+      default:
+        return value;
+    }
+  };
+
   return (
     <div className="college-dashboard-page">
-     
-      
       <div className="container dashboard-container">
         {/* College Info Banner */}
         <motion.div
@@ -411,7 +460,7 @@ const CollegeDashboardPage = () => {
                           </div>
                         </div>
                         
-                        <div className="documents-section">
+                        <div className="document-section">
                           <h4>
                             <FaFileAlt className="details-icon" />
                             Submitted Documents
@@ -438,6 +487,35 @@ const CollegeDashboardPage = () => {
                             <p className="no-documents">No documents submitted</p>
                           )}
                         </div>
+                        
+                        {/* Dynamic Fields Data */}
+                        {application.dynamicFieldValues && Object.keys(application.dynamicFieldValues).length > 0 && (
+                          <div className="dynamic-fields-section">
+                            <h4>
+                              <FaClipboardList className="details-icon" />
+                              Additional Information
+                            </h4>
+                            
+                            <div className="dynamic-fields-data">
+                              {Object.entries(application.dynamicFieldValues).map(([fieldId, value]) => {
+                                // Find the field definition in the scholarship data
+                                // This is a simplified approach - in production, you'd want to fetch the scholarship data
+                                const field = {
+                                  id: fieldId,
+                                  label: fieldId.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                                  type: typeof value === 'number' ? 'number' : 'text'
+                                };
+                                
+                                return (
+                                  <div key={fieldId} className="dynamic-field-item">
+                                    <span className="field-label">{field.label}:</span>
+                                    <span className="field-value">{renderDynamicFieldValue(field, value)}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
                       </div>
                       
                       <div className="application-footer">
@@ -458,6 +536,11 @@ const CollegeDashboardPage = () => {
                               <span className={`detail-value status-text ${application.status}`}>
                                 {application.status}
                               </span>
+                              {isReapplication(application) && (
+                                <span className="reapplication-badge">
+                                  <FaHistory /> Reapplied
+                                </span>
+                              )}
                             </div>
                             <div className="detail-item">
                               <span className="detail-label">Review Date:</span>
@@ -468,6 +551,16 @@ const CollegeDashboardPage = () => {
                                 <h5>Message:</h5>
                                 <p>{application.reviewMessage}</p>
                               </div>
+                            )}
+                            
+                            {/* View Application History Button */}
+                            {application.statusHistory && application.statusHistory.length > 0 && (
+                              <button 
+                                className="history-btn"
+                                onClick={() => openReviewModal(application)}
+                              >
+                                <FaHistory /> View Application History
+                              </button>
                             )}
                           </div>
                         )}
@@ -556,7 +649,79 @@ const CollegeDashboardPage = () => {
                     <p><strong>Scholarship:</strong> {currentApplication?.scholarshipName}</p>
                     <p><strong>Applicant:</strong> {currentApplication?.userName || currentApplication?.userEmail || currentApplication?.userPhoneNumber}</p>
                     <p><strong>Applied On:</strong> {formatDate(currentApplication?.appliedDate)}</p>
+                    {isReapplication(currentApplication) && (
+                      <p className="reapplication-notice">
+                        <FaHistory className="notice-icon" />
+                        <strong>Reapplication:</strong> This student has reapplied after a previous rejection
+                      </p>
+                    )}
                   </div>
+                  
+                  {/* Application History Section */}
+                  {applicationHistory.length > 0 && (
+                    <div className="application-history">
+                      <h4>
+                        <FaHistory className="history-icon" />
+                        Application History
+                      </h4>
+                      
+                      <div className="history-timeline">
+                        {applicationHistory.map((entry, index) => (
+                          <div key={index} className="history-item">
+                            <div className="history-marker"></div>
+                            <div className="history-content">
+                              <div className="history-date">{formatDate(entry.date)}</div>
+                              <div className="history-details">
+                                <div className="status-change">
+                                  <span className={`history-status ${entry.previousStatus}`}>{entry.previousStatus}</span>
+                                  <span className="arrow-icon">→</span>
+                                  <span className={`history-status ${entry.newStatus}`}>{entry.newStatus}</span>
+                                </div>
+                                {entry.reviewMessage && (
+                                  <div className="history-message">
+                                    <p>"{entry.reviewMessage}"</p>
+                                  </div>
+                                )}
+                                {entry.reviewedBy && (
+                                  <div className="history-reviewer">
+                                    Reviewed by: {entry.reviewedBy}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Dynamic Fields Data in Modal */}
+                  {currentApplication?.dynamicFieldValues && Object.keys(currentApplication.dynamicFieldValues).length > 0 && (
+                    <div className="review-dynamic-fields">
+                      <h4>
+                        <FaClipboardList className="fields-icon" />
+                        Additional Information
+                      </h4>
+                      
+                      <div className="fields-grid">
+                        {Object.entries(currentApplication.dynamicFieldValues).map(([fieldId, value]) => {
+                          // Similar approach as in the card
+                          const field = {
+                            id: fieldId,
+                            label: fieldId.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                            type: typeof value === 'number' ? 'number' : 'text'
+                          };
+                          
+                          return (
+                            <div key={fieldId} className="review-field-item">
+                              <div className="review-field-label">{field.label}:</div>
+                              <div className="review-field-value">{renderDynamicFieldValue(field, value)}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                   
                   <div className="review-form">
                     <label htmlFor="reviewMessage">Review Message (Optional)</label>

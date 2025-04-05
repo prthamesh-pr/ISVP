@@ -1,6 +1,6 @@
-// EligibilityStatusPage.js
+// EligibilityStatusPage.js with dynamic fields and improved re-application
 import React, { useEffect, useState } from "react";
-import { ref, onValue, push, set } from "firebase/database";
+import { ref, onValue, push, set, update } from "firebase/database";
 import { database } from "../firebase";
 import Cookies from "js-cookie";
 import { motion } from "framer-motion";
@@ -18,6 +18,8 @@ import {
   FaTimes,
   FaDownload,
   FaStar,
+  FaRedo,
+  FaClipboardList
 } from "react-icons/fa";
 import "../EligibilityStatus.css";
 
@@ -31,6 +33,9 @@ const EligibilityStatusPage = () => {
   const [applySuccess, setApplySuccess] = useState(false);
   const [applyError, setApplyError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [dynamicFieldValues, setDynamicFieldValues] = useState({});
+  const [isReapplying, setIsReapplying] = useState(false);
+  const [currentApplicationId, setCurrentApplicationId] = useState(null);
 
   const userPhoneNumber = Cookies.get("userPhoneNumber");
   const collegeCode = Cookies.get("collegeCenterCode");
@@ -68,7 +73,6 @@ const EligibilityStatusPage = () => {
     });
 
     // Fetch user documents
-    debugger;
     const docsRef = ref(database, `userDocuments/${userPhoneNumber}`);
     const unsubscribeDocs = onValue(docsRef, (snapshot) => {
       if (snapshot.exists()) {
@@ -113,9 +117,34 @@ const EligibilityStatusPage = () => {
 
   const handleApplyClick = (scholarship) => {
     setCurrentScholarship(scholarship);
+    const existingApplication = applications[scholarship.id];
+    
+    setIsReapplying(!!existingApplication);
+    
+    if (existingApplication) {
+      setCurrentApplicationId(existingApplication.id);
+      
+      // Pre-fill existing dynamic field values if any
+      if (existingApplication.dynamicFieldValues) {
+        setDynamicFieldValues(existingApplication.dynamicFieldValues);
+      } else {
+        setDynamicFieldValues({});
+      }
+    } else {
+      setCurrentApplicationId(null);
+      setDynamicFieldValues({});
+    }
+    
     setShowApplyModal(true);
     setApplySuccess(false);
     setApplyError("");
+  };
+
+  const handleDynamicFieldChange = (fieldId, value) => {
+    setDynamicFieldValues(prev => ({
+      ...prev,
+      [fieldId]: value
+    }));
   };
 
   const handleApplySubmit = async () => {
@@ -127,7 +156,7 @@ const EligibilityStatusPage = () => {
       const applicationData = {
         scholarshipId: currentScholarship.id,
         scholarshipName: currentScholarship.name,
-        status: "pending",
+        status: isReapplying ? "pending" : "pending", // Reset to pending if reapplying
         appliedDate: new Date().toISOString(),
         userName,
         userEmail,
@@ -135,14 +164,29 @@ const EligibilityStatusPage = () => {
         collegeName,
         collegeCode,
         documents: userData?.documents || {},
+        dynamicFieldValues: dynamicFieldValues,
+        reapplied: isReapplying,
+        reappliedDate: isReapplying ? new Date().toISOString() : null
       };
 
       const applicationRef = ref(
         database,
         `applications/${userPhoneNumber.replace(".", "_")}`
       );
-      const newAppRef = push(applicationRef);
-      await set(newAppRef, applicationData);
+
+      if (isReapplying && currentApplicationId) {
+        // Update existing application
+        await update(ref(database, `applications/${userPhoneNumber.replace(".", "_")}/${currentApplicationId}`), applicationData);
+      } else {
+        // Create new application
+        const newAppRef = push(applicationRef);
+        await set(newAppRef, {
+          ...applicationData,
+          id: newAppRef.key
+        });
+        
+        setCurrentApplicationId(newAppRef.key);
+      }
 
       setApplySuccess(true);
 
@@ -150,13 +194,14 @@ const EligibilityStatusPage = () => {
       setApplications((prev) => ({
         ...prev,
         [currentScholarship.id]: {
-          id: newAppRef.key,
+          id: isReapplying ? currentApplicationId : currentApplicationId || "new",
           ...applicationData,
         },
       }));
 
       setTimeout(() => {
         setShowApplyModal(false);
+        setDynamicFieldValues({});
       }, 2000);
     } catch (error) {
       console.error("Error applying for scholarship:", error);
@@ -192,6 +237,94 @@ const EligibilityStatusPage = () => {
   // Check if user has already applied for a scholarship
   const hasApplied = (scholarshipId) => {
     return applications[scholarshipId] !== undefined;
+  };
+
+  // Check if application was rejected
+  const isRejected = (scholarshipId) => {
+    return applications[scholarshipId]?.status === "rejected";
+  };
+
+  // Render dynamic field input based on field type
+  const renderDynamicFieldInput = (field) => {
+    const value = dynamicFieldValues[field.id] || "";
+    
+    switch(field.type) {
+      case 'text':
+        return (
+          <input
+            type="text"
+            className="form-input"
+            value={value}
+            onChange={(e) => handleDynamicFieldChange(field.id, e.target.value)}
+            required={field.required}
+          />
+        );
+      case 'number':
+        return (
+          <input
+            type="number"
+            className="form-input"
+            value={value}
+            onChange={(e) => handleDynamicFieldChange(field.id, e.target.value)}
+            required={field.required}
+          />
+        );
+      case 'date':
+        return (
+          <input
+            type="date"
+            className="form-input"
+            value={value}
+            onChange={(e) => handleDynamicFieldChange(field.id, e.target.value)}
+            required={field.required}
+          />
+        );
+      case 'select':
+        return (
+          <select
+            className="form-input"
+            value={value}
+            onChange={(e) => handleDynamicFieldChange(field.id, e.target.value)}
+            required={field.required}
+          >
+            <option value="">Select an option</option>
+            {field.options?.map((option, idx) => (
+              <option key={idx} value={option.value}>{option.label}</option>
+            )) || <option value="option">Option</option>}
+          </select>
+        );
+      case 'file':
+        return (
+          <div className="file-upload-field">
+            <input
+              type="file"
+              id={`file-${field.id}`}
+              className="file-input"
+              onChange={(e) => {
+                // In a real implementation, you would handle file upload
+                // For now, we just store the file name
+                if (e.target.files && e.target.files[0]) {
+                  handleDynamicFieldChange(field.id, e.target.files[0].name);
+                }
+              }}
+              required={field.required}
+            />
+            <label htmlFor={`file-${field.id}`} className="file-label">
+              {value ? value : "Choose file"}
+            </label>
+          </div>
+        );
+      default:
+        return (
+          <input
+            type="text"
+            className="form-input"
+            value={value}
+            onChange={(e) => handleDynamicFieldChange(field.id, e.target.value)}
+            required={field.required}
+          />
+        );
+    }
   };
 
   return (
@@ -273,11 +406,31 @@ const EligibilityStatusPage = () => {
 
               <div className="applications-summary">
                 <h4 className="summary-title">Your Applications</h4>
-                <div className="summary-count">
-                  <span className="count-number">
-                    {Object.keys(applications).length}
-                  </span>
-                  <span className="count-text">Applied</span>
+                <div className="applications-status">
+                  <div className="status-item">
+                    <span className="count-number">
+                      {Object.keys(applications).length}
+                    </span>
+                    <span className="count-text">Total</span>
+                  </div>
+                  <div className="status-item pending">
+                    <span className="count-number">
+                      {Object.values(applications).filter(app => app.status === 'pending').length}
+                    </span>
+                    <span className="count-text">Pending</span>
+                  </div>
+                  <div className="status-item approved">
+                    <span className="count-number">
+                      {Object.values(applications).filter(app => app.status === 'approved').length}
+                    </span>
+                    <span className="count-text">Approved</span>
+                  </div>
+                  <div className="status-item rejected">
+                    <span className="count-number">
+                      {Object.values(applications).filter(app => app.status === 'rejected').length}
+                    </span>
+                    <span className="count-text">Rejected</span>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -299,6 +452,7 @@ const EligibilityStatusPage = () => {
                       const daysRemaining = getDaysRemaining(
                         scholarship.endDate
                       );
+                      const rejected = isRejected(scholarship.id);
 
                       return (
                         <motion.div
@@ -308,7 +462,7 @@ const EligibilityStatusPage = () => {
                           transition={{ delay: index * 0.1 }}
                           className={`scholarship-card ${
                             expired ? "expired" : ""
-                          }`}
+                          } ${rejected ? "rejected" : ""}`}
                         >
                           {expired && (
                             <div className="expired-badge">
@@ -318,9 +472,14 @@ const EligibilityStatusPage = () => {
                           )}
 
                           {hasApplied(scholarship.id) && (
-                            <div className="applied-badge">
-                              <FaCheck />
-                              <span>Applied</span>
+                            <div className={`applied-badge ${applications[scholarship.id].status}`}>
+                              {applications[scholarship.id].status === 'approved' ? (
+                                <><FaCheck /> <span>Approved</span></>
+                              ) : applications[scholarship.id].status === 'rejected' ? (
+                                <><FaTimes /> <span>Rejected</span></>
+                              ) : (
+                                <><FaClock /> <span>Pending</span></>
+                              )}
                             </div>
                           )}
 
@@ -389,20 +548,49 @@ const EligibilityStatusPage = () => {
                                 </ul>
                               </div>
 
+                              {/* Custom Fields Section */}
+                              {scholarship.dynamicFields && scholarship.dynamicFields.length > 0 && (
+                                <div className="custom-fields-box">
+                                  <h4>
+                                    <FaClipboardList className="fields-icon" />
+                                    Additional Information Required
+                                  </h4>
+                                  <ul className="custom-fields-list">
+                                    {scholarship.dynamicFields.map((field, idx) => (
+                                      <li key={idx}>
+                                        <span className="field-label">{field.label}</span>
+                                        {field.required && <span className="required-marker">*</span>}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+
                               <div className="scholarship-actions">
                                 {hasApplied(scholarship.id) ? (
                                   <button
-                                    className="already-applied-button"
-                                    disabled
+                                    className={`application-button ${applications[scholarship.id].status}`}
+                                    onClick={() => handleApplyClick(scholarship)}
+                                    disabled={expired || applications[scholarship.id].status === 'approved'}
                                   >
-                                    <FaCheck /> Already Applied
+                                    {applications[scholarship.id].status === 'rejected' ? (
+                                      <>
+                                        <FaRedo /> Re-Apply
+                                      </>
+                                    ) : applications[scholarship.id].status === 'approved' ? (
+                                      <>
+                                        <FaCheck /> Approved
+                                      </>
+                                    ) : (
+                                      <>
+                                        <FaCheck /> Applied
+                                      </>
+                                    )}
                                   </button>
                                 ) : (
                                   <button
                                     className="apply-button"
-                                    onClick={() =>
-                                      handleApplyClick(scholarship)
-                                    }
+                                    onClick={() => handleApplyClick(scholarship)}
                                     disabled={expired}
                                   >
                                     <FaPaperPlane /> Apply Now
@@ -440,13 +628,15 @@ const EligibilityStatusPage = () => {
                 <div className="success-icon">
                   <FaCheck />
                 </div>
-                <h3>Application Submitted!</h3>
-                <p>Your application has been successfully submitted.</p>
+                <h3>{isReapplying ? "Application Updated!" : "Application Submitted!"}</h3>
+                <p>{isReapplying 
+                    ? "Your application has been successfully updated and will be reviewed again."
+                    : "Your application has been successfully submitted."}</p>
               </div>
             ) : (
               <>
                 <div className="modal-header">
-                  <h3>Apply for Scholarship</h3>
+                  <h3>{isReapplying ? "Re-Apply for Scholarship" : "Apply for Scholarship"}</h3>
                   <button
                     className="close-button"
                     onClick={() => setShowApplyModal(false)}
@@ -485,6 +675,28 @@ const EligibilityStatusPage = () => {
                       <span className="detail-value">{collegeName}</span>
                     </div>
                   </div>
+
+                  {/* Dynamic Fields Section */}
+                  {currentScholarship?.dynamicFields && currentScholarship.dynamicFields.length > 0 && (
+                    <div className="dynamic-fields-form">
+                      <h4>
+                        <FaClipboardList className="form-section-icon" />
+                        Additional Information
+                      </h4>
+                      
+                      <div className="dynamic-fields-container">
+                        {currentScholarship.dynamicFields.map((field, index) => (
+                          <div key={index} className="dynamic-field-item">
+                            <label className="dynamic-field-label">
+                              {field.label}
+                              {field.required && <span className="required-marker">*</span>}
+                            </label>
+                            {renderDynamicFieldInput(field)}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="documents-summary">
                     <h4>
@@ -539,6 +751,11 @@ const EligibilityStatusPage = () => {
                         <div className="button-spinner"></div>
                         <span>Submitting...</span>
                       </>
+                    ) : isReapplying ? (
+                      <>
+                        <FaRedo />
+                        <span>Submit Updated Application</span>
+                      </>
                     ) : (
                       <>
                         <FaPaperPlane />
@@ -555,5 +772,6 @@ const EligibilityStatusPage = () => {
     </div>
   );
 };
+
 
 export default EligibilityStatusPage;

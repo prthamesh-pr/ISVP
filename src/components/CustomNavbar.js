@@ -51,7 +51,7 @@ const CustomNavbar = (props) => {
             alt="FundMyFuture Logo"
           />
           <div className="brand-text">
-            <span className="brand-name">FundMyFuture</span>
+            <span className="brand-name">ISVP</span>
             <span className="brand-portal"></span>
           </div>
         </Link>

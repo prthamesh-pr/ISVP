@@ -12,15 +12,6 @@ const firebaseConfig = {
   appId: "1:611906384160:web:a8892161af37a0b36d2745",
   measurementId: "G-0Y6MPN71K7"
 };
-// const firebaseConfig = {
-//   apiKey: "AIzaSyAiJf1SDTPpfRHr4NwckDu_1ImNpju6y14",
-//   authDomain: "jarvis-systems-commons.firebaseapp.com",
-//   databaseURL: "https://jarvis-systems-commons-default-rtdb.firebaseio.com",
-//   projectId: "jarvis-systems-commons",
-//   storageBucket: "jarvis-systems-commons.appspot.com",
-//   messagingSenderId: "383480447879",
-//   appId: "1:383480447879:web:45baeaa9517cbb97088922",
-// };
 
 const app = initializeApp(firebaseConfig);
 

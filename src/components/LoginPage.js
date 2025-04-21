@@ -99,7 +99,7 @@ const LoginPage = (props) => {
         <div className="row justify-content-center align-items-center">
           <div className="col-md-6 d-none d-md-block">
             <div className={`login-image-container ${animate ? 'animate__animated animate__fadeInLeft' : ''}`}>
-              <Image src="login.jpg" alt="Login" fluid className="login-image" />
+              <Image src="bg1.png" alt="Login" fluid className="login-image" />
               <div className="login-image-overlay">
                 <h2 className="overlay-title">Welcome Back!</h2>
                 <p className="overlay-text">Access your account to explore thousands of scholarship opportunities</p>
@@ -182,7 +182,7 @@ const LoginPage = (props) => {
                 </Form>
                 
                 <div className="mt-4 text-center">
-                  <p className="mb-0">Don't have an account? <a href="#" className="register-link">Register Now</a></p>
+                  <p className="mb-0">Don't have an account? <a href="/Register" className="register-link">Register Now</a></p>
                 </div>
               </div>
             </div>

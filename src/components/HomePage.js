@@ -61,7 +61,7 @@ const HomePage = () => {
             style={{backgroundImage: 'url("https://images.unsplash.com/photo-1523050854058-8df90110c9f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080")'}}>
           </div>
           <Carousel.Caption className="carousel-caption animate__animated animate__fadeInUp">
-            <h1 className="main-title">Welcome to FundMyFuture</h1>
+            <h1 className="main-title">Welcome to Inter State Student Verification Portal</h1>
             <h3>Discover Opportunities</h3>
             <p>Find scholarships that match your profile and take your education to the next level</p>
             

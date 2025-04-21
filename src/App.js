@@ -100,7 +100,7 @@ function App() {
         </main>
         <footer className="footer mt-auto py-3 bg-dark text-light">
         <div className="container text-center">
-          <p className="mb-0">&copy; 2023 FundMyFuture. All rights reserved.</p>
+          <p className="mb-0">&copy; 2025 ISVP. All rights reserved.</p>
         </div>
       </footer>
       <ToastContainer position="top-right" />
